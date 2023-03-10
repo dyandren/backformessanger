@@ -141,6 +141,7 @@ public class UserController {
     }
     public static class Messageget{
         String user;
+        int selection;
 
         public String getUser() {
             return user;
@@ -148,6 +149,14 @@ public class UserController {
 
         public void setUser(String user) {
             this.user = user;
+        }
+
+        public int getSelection() {
+            return selection;
+        }
+
+        public void setSelection(int selection) {
+            this.selection = selection;
         }
     }
 }
