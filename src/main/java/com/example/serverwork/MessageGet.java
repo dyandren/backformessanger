@@ -1,5 +1,8 @@
 package com.example.serverwork;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,8 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageGet {
-    public static Object Get(UserController.Messageget messageget){
+    public static JSONObject Get(UserController.Messageget messageget){
         try{
+
             String url = "jdbc:postgresql://localhost:5432/messenger";
             String user = "postgres";
             String password = "26463";
@@ -26,34 +30,45 @@ public class MessageGet {
             preparedStatement.setString(3, messageget.getUser());
             preparedStatement.setString(4, messageget.getUser());
             ResultSet rs =preparedStatement.executeQuery();
-            ArrayList<String> result = new ArrayList<String>();
+            JSONObject json = new JSONObject();
+            JSONArray contactsArray = new JSONArray();
             while (rs.next()){
-                result.add(rs.getString("contact"));
+                contactsArray.put(rs.getString("contact"));
             }
+            json.put("contacts",contactsArray);
             if(messageget.getSelection()!=0){
-                String whatUserSelect = result.get(messageget.getSelection()-1);
+                json = new JSONObject();
+                String whatUserSelect = contactsArray.getString(messageget.getSelection() - 1);
                 sql = "SELECT * FROM messages WHERE sender = ? or getter = ?";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1,whatUserSelect);
                 preparedStatement.setString(2,whatUserSelect);
                 rs = preparedStatement.executeQuery();
-                result = new ArrayList<String>();
+                JSONArray messages = new JSONArray();
                 while(rs.next()){
-                    String sender = rs.getString("sender");
-                    String getter = rs.getString("getter");
-                    String message = rs.getString("message");
-                    String senddate=rs.getString("senddate");
-                    String read = rs.getString("read");
-                    result.add(String.format("Message=%s , sender =%s, getter=%s, send date =%s, read = %s \n",message,sender,getter,senddate,read));
+                    JSONObject whatInside = new JSONObject();
+                    whatInside.put("ID",rs.getInt("id"));
+                    whatInside.put("sender",rs.getString("sender"));
+                    whatInside.put("getter",rs.getString("getter"));
+                    whatInside.put("message",rs.getString("message"));
+                    whatInside.put("date",rs.getDate("senddate"));
+                    whatInside.put("read",rs.getBoolean("read"));
+                    messages.put(whatInside);
                 }
-                return result;
+                json.put("messages",messages);
+
+                return json;
 
 
             }
-            return result;
+
+            return json;
+
 
         }catch (Exception e){
-        return e;
+            JSONObject error = new JSONObject();
+            error.put("Error",e);
+            return error;
         }
     }
 }
