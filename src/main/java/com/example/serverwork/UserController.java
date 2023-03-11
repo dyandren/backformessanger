@@ -1,4 +1,6 @@
 package com.example.serverwork;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import netscape.javascript.JSObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,12 +49,12 @@ public class UserController {
     public Object Getmessages(@RequestBody Messageget messageget){
         try {
 
-            return MessageGet.Get(messageget).toString();
+            return MessageGet.Get(messageget);
         }
         catch (Exception e){
-            JSONObject error = new JSONObject();
-            error.put("Error",e);
-            return error ;
+            ObjectNode error = new ObjectMapper().createObjectNode();
+            error.put("Error", e.toString());
+            return error;
         }
     }
 
