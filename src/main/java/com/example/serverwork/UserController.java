@@ -62,6 +62,10 @@ public class UserController {
             return error;
         }
     }
+    @PostMapping(value = "/group/create")
+    public Object CreateGroup(@RequestBody GroupCreation groupCreation){
+        return CreateGroup.Groupcreation(groupCreation);
+    }
 
     public static class User {
         private String login;
@@ -175,6 +179,39 @@ public class UserController {
 
         public void setSelection(int selection) {
             this.selection = selection;
+        }
+    }
+    public static class GroupCreation{
+        String userwhocreate;
+        String groupname;
+        String privatee;
+
+        public void GroupCreation(){
+
+        }
+
+        public String getGroupname() {
+            return groupname;
+        }
+
+        public String getUserwhocreate() {
+            return userwhocreate;
+        }
+
+        public void setGroupname(String groupname) {
+            this.groupname = groupname;
+        }
+
+        public void setUserwhocreate(String userwhocreate) {
+            this.userwhocreate = userwhocreate;
+        }
+
+        public String getPrivatee() {
+            return privatee;
+        }
+
+        public void setPrivatee(String privatee) {
+            this.privatee = privatee;
         }
     }
 }
