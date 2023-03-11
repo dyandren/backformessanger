@@ -58,6 +58,7 @@ public class MessageGet {
                     whatInside.put("getter",rs.getString("getter"));
                     whatInside.put("message",rs.getString("message"));
                     whatInside.put("date",rs.getDate("senddate").toString());
+                    whatInside.put("time",rs.getTime("senddate").toString());
                     whatInside.put("read",rs.getBoolean("read"));
                     messages.add(whatInside);
                 }
