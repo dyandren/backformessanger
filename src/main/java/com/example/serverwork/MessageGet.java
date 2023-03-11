@@ -45,7 +45,7 @@ public class MessageGet {
             if(messageget.getSelection()!=0){
                 json = objectMapper.createObjectNode();
                 String whatUserSelect = contactsArray.get(messageget.getSelection() - 1).asText();
-                sql = "SELECT * FROM messages WHERE sender = ? or getter = ?";
+                sql = "SELECT * FROM messages WHERE sender = ? or getter = ? ORDER BY senddate ASC";
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1,whatUserSelect);
                 preparedStatement.setString(2,whatUserSelect);
