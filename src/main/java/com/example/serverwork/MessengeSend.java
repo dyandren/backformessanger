@@ -1,19 +1,33 @@
 package com.example.serverwork;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.sql.*;
 
 
 public class MessengeSend {
-    public static Boolean Send(UserController.Message message){
+    public static ObjectNode Send(UserController.Message message){
     try{
         String url = "jdbc:postgresql://localhost:5432/messenger";
         String user = "postgres";
         String password = "26463";
+        ObjectMapper objectMapper= new ObjectMapper();
+        ObjectNode json = objectMapper.createObjectNode();
+        if(message.getMessage()==null){
+            json.put("MessageStatus","message without text");
+            return json;
+        }
+        if (message.getMessage().length()>255){
+            json.put("MessageStatus","message too big");
+            return json;
+        }
         Connection connection = DriverManager.getConnection(url,user,password);
         String check = "SELECT * FROM users WHERE login = ?";
         PreparedStatement checkstatement = connection.prepareStatement(check);
         checkstatement.setString(1,message.getGetter());
         ResultSet Isexicted = checkstatement.executeQuery();
+
         if (Isexicted.next()){
             String sql="INSERT INTO messages(sender,getter,message,read) VALUES (?, ?, ?, false)";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -23,20 +37,26 @@ public class MessengeSend {
             int rowsinserted = statement.executeUpdate();
             statement.close();
             connection.close();
-            if (rowsinserted>0){
-               return true;
+            if(rowsinserted>0){
+               json.put("MessageStatus","Sent");
+               return json;
             }
             else{
-                return false;
+                json.put("MessageStatus","didnt send");
+                return json;
             }
         }
         else {
-            return false;
+            json.put("MessageStatus","user not found");
+            return json;
         }
 
 
     }catch (Exception e){
-        return false;
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode json = objectMapper.createObjectNode();
+        json.put("Error",e.toString());
+        return json;
     }
     }
 }

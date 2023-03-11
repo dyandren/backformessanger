@@ -1,9 +1,12 @@
 package com.example.serverwork;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.sql.*;
 
 
 public class registration {
-    public static String Registation(UserController.User userr){
+    public static ObjectNode Registation(UserController.User userr){
         try{
             String url = "jdbc:postgresql://localhost:5432/messenger";
             String user = "postgres";
@@ -15,8 +18,11 @@ public class registration {
             checkstatement.setString(2,userr.getEmail());
             checkstatement.setString(3,userr.getTelephone());
             ResultSet Isexicted = checkstatement.executeQuery();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode json = objectMapper.createObjectNode();
             if(Isexicted.next()){
-                return "ERROR";
+                json.put("Regisration status","user with this login exist");
+                return json;
             }
 
             String sql = "INSERT INTO users(login,password,role,email,telephone) VALUES (?, ?, ?, ?, ?)";
@@ -32,14 +38,19 @@ public class registration {
             connection.close();
             if(rowsInserted>0){
 
-                return "Registration complete";
+                json.put("Regisration status","Registration completed");
+                return json;
+
             }
             else {
-                return "Registration Failed";
+                json.put("Regisration status","Registration failed");
+                return json;
             }
         }catch (Exception e){
-            return e.toString();
-        }
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode json = objectMapper.createObjectNode();
+            json.put("Error",e.toString());
+            return json;        }
     }
 
 }

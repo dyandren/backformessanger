@@ -20,11 +20,13 @@ public class UserController {
     }
 
     @PostMapping("/user/registration")
-    public Object createUser(@RequestBody User user) {
+    public ObjectNode createUser(@RequestBody User user) {
         try{
             return registration.Registation(user);
         }catch (Exception e){
-            return "ERROR";
+            ObjectNode error = new ObjectMapper().createObjectNode();
+            error.put("Error", e.toString());
+            return error;
         }
 
     }
@@ -33,20 +35,23 @@ public class UserController {
         try{
     return Loginn.Login(login);
         }catch (Exception e ){
-            return "Error";
+            ObjectNode error = new ObjectMapper().createObjectNode();
+            error.put("Error", e.toString());
+            return error;
         }
     }
     @PostMapping("/message/send")
-    public  Object Messagesend(@RequestBody Message message){
+    public  ObjectNode Messagesend(@RequestBody Message message){
         try{
             return  MessengeSend.Send(message);
         }
         catch (Exception e){
-            return false;
-        }
+            ObjectNode error = new ObjectMapper().createObjectNode();
+            error.put("Error", e.toString());
+            return error;        }
     }
     @GetMapping(value = "/message/get",produces = "application/json")
-    public Object Getmessages(@RequestBody Messageget messageget){
+    public ObjectNode Getmessages(@RequestBody Messageget messageget){
         try {
 
             return MessageGet.Get(messageget);
@@ -101,6 +106,9 @@ public class UserController {
     public static class Login{
         String Login;
         String Password;
+        public void Login(){
+
+        }
         public void setLogin(String login){
             this.Login=login;
         }
@@ -150,6 +158,9 @@ public class UserController {
         String user;
         int selection;
 
+        public void Messageget(){
+
+        }
         public String getUser() {
             return user;
         }

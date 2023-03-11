@@ -1,9 +1,12 @@
 package com.example.serverwork;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.sql.*;
 
 public class Loginn {
-    public static String Login(UserController.Login userr){
+    public static ObjectNode Login(UserController.Login userr){
         try{
             String url = "jdbc:postgresql://localhost:5432/messenger";
             String user = "postgres";
@@ -12,24 +15,29 @@ public class Loginn {
             Connection connection = DriverManager.getConnection(url,user,password);
             PreparedStatement pstmt= connection.prepareStatement(sql);
             pstmt.setString(1,userr.getLogin());
+
+
             pstmt.setString(2,userr.getPassword());
             ResultSet rs = pstmt.executeQuery();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode json = objectMapper.createObjectNode();
+
             if(rs.next()){
-
-                String login = rs.getString("login");
-                String email = rs.getString("email");
-                String telephone = rs.getString("telephone");
-                String role = rs.getString("role");
-
-                // объединяем значения в одну строку
-                String result = String.format("User found: login=%s, email=%s, telephone=%s,role=%s", login,email,telephone,role);
-                return result;
+                json.put("login",rs.getString("login"));
+                json.put("email",rs.getString("email"));
+                json.put("telephone",rs.getString("telephone"));
+                json.put("role",rs.getString("role"));
+                return json;
             }
             else {
-                return "User not found"+ userr.Login+userr.Password;
+                json.put("Error","User not found");
+                return json;
             }
         }catch (Exception e){
-            return e.toString();
+            ObjectMapper objectMapper = new ObjectMapper();
+            ObjectNode json = objectMapper.createObjectNode();
+            json.put("Error",e.toString());
+            return json;
         }
     }
 }
