@@ -6,12 +6,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.sql.*;
 
 
-public class MessengeSend {
+public class MessengeSend extends DataBaseConnection {
     public static ObjectNode Send(UserController.Message message){
     try{
-        String url = "jdbc:postgresql://localhost:5432/messenger";
-        String user = "postgres";
-        String password = "26463";
+
         ObjectMapper objectMapper= new ObjectMapper();
         ObjectNode json = objectMapper.createObjectNode();
         if(message.getMessage()==null){
@@ -22,7 +20,7 @@ public class MessengeSend {
             json.put("MessageStatus","message too big");
             return json;
         }
-        Connection connection = DriverManager.getConnection(url,user,password);
+        Connection connection = Returnconnection();
         String check = "SELECT * FROM users WHERE login = ?";
         PreparedStatement checkstatement = connection.prepareStatement(check);
         checkstatement.setString(1,message.getGetter());

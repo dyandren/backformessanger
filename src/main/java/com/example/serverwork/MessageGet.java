@@ -13,14 +13,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageGet {
+public class MessageGet extends DataBaseConnection {
     public static ObjectNode Get(UserController.Messageget messageget){
         try{
 
-            String url = "jdbc:postgresql://localhost:5432/messenger";
-            String user = "postgres";
-            String password = "26463";
-            Connection connection = DriverManager.getConnection(url,user,password);
+
+            Connection connection = Returnconnection();
             String sql = "SELECT DISTINCT contact\n" +
                     "FROM (\n" +
                     "    SELECT sender AS contact FROM messages WHERE sender <> ? and getter = ?\n" +

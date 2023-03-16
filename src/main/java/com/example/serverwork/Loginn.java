@@ -5,14 +5,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.sql.*;
 
-public class Loginn {
+public class Loginn extends DataBaseConnection {
     public static ObjectNode Login(UserController.Login userr){
         try{
-            String url = "jdbc:postgresql://localhost:5432/messenger";
-            String user = "postgres";
-            String password = "26463";
+
             String sql = "SELECT * FROM users WHERE login = ? AND password = ?";
-            Connection connection = DriverManager.getConnection(url,user,password);
+            Connection connection = Returnconnection();
             PreparedStatement pstmt= connection.prepareStatement(sql);
             pstmt.setString(1,userr.getLogin());
 

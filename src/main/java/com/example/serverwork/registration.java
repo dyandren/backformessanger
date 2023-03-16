@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.sql.*;
 
 
-public class registration {
+public class registration extends DataBaseConnection{
     public static ObjectNode Registation(UserController.User userr){
         try{
-            String url = "jdbc:postgresql://localhost:5432/messenger";
-            String user = "postgres";
-            String password = "26463";
-            Connection connection = DriverManager.getConnection(url,user,password);
+
+            Connection connection = Returnconnection();
             String check = "SELECT * FROM users WHERE (login = ?) OR (email = ?)OR(telephone= ?)";
             PreparedStatement checkstatement = connection.prepareStatement(check);
             checkstatement.setString(1,userr.getLogin());

@@ -9,15 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
-public class CreateGroup {
+public class CreateGroup extends DataBaseConnection {
     public static Object Groupcreation(UserController.GroupCreation groupCreation){
         try {
-            String url = "jdbc:postgresql://localhost:5432/messenger";
-            String user = "postgres";
-            String password = "26463";
+
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode json = objectMapper.createObjectNode();
-            Connection connection = DriverManager.getConnection(url,user,password);
+            Connection connection = Returnconnection();
             String check = "SELECT * FROM groups WHERE (name = ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(check);
             preparedStatement.setString(1,groupCreation.getGroupname());
