@@ -63,6 +63,10 @@ public class UserController {
     public Object CreateGroup(@RequestBody GroupCreation groupCreation){
         return CreateGroup.Groupcreation(groupCreation);
     }
+    @PostMapping(value = "/group/add")
+    public ObjectNode groupAdding(@RequestBody GroupAdding adding){
+        return  AddUserToGroup.groupAdding(adding);
+    }
 
     public static class User {
         private String login;
@@ -209,6 +213,38 @@ public class UserController {
 
         public void setPrivatee(String privatee) {
             this.privatee = privatee;
+        }
+    }
+    public static class GroupAdding{
+        public void GroupAdding(){
+
+        }
+        private String groupName;
+        private String userWhoInvite;
+        private String invitedUser;
+
+        public String getGroupName() {
+            return groupName;
+        }
+
+        public void setGroupName(String groupName) {
+            this.groupName = groupName;
+        }
+
+        public String getUserWhoInvite() {
+            return userWhoInvite;
+        }
+
+        public void setUserWhoInvite(String userWhoInvite) {
+            this.userWhoInvite = userWhoInvite;
+        }
+
+        public String getInvitedUser() {
+            return invitedUser;
+        }
+
+        public void setInvitedUser(String invitedUser) {
+            this.invitedUser = invitedUser;
         }
     }
 }
