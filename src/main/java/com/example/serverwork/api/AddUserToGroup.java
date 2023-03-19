@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class AddUserToGroup extends DataBaseConnection {
-    public static ObjectNode groupAdding(UserController.GroupAdding adding){
+    public static ObjectNode groupAdding(UserController.GroupPatting adding){
         try {
 
 
@@ -60,10 +60,6 @@ public class AddUserToGroup extends DataBaseConnection {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode json = objectMapper.createObjectNode();
             json.put("Error",e.toString());
-            System.out.println(adding.getGroupName());
-            System.out.println(adding.getInvitedUser());
-            System.out.println(adding.getUserWhoInvite());
-            System.out.println(e.getStackTrace()[0]);
             return json;
         }
     }

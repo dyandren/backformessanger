@@ -2,10 +2,7 @@ package com.example.serverwork.servercode;
 import com.example.serverwork.api.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -63,9 +60,17 @@ public class UserController {
     public Object CreateGroup(@RequestBody GroupCreation groupCreation){
         return CreateGroup.Groupcreation(groupCreation);
     }
-    @PostMapping(value = "/group/add")
-    public ObjectNode groupAdding(@RequestBody GroupAdding adding){
-        return  AddUserToGroup.groupAdding(adding);
+    @PutMapping(value = "/group/put")
+    public ObjectNode groupPutting(@RequestBody GroupPatting putting){
+        return  AddUserToGroup.groupAdding(putting);
+    }
+    @DeleteMapping(value = "/group/delete")
+    public ObjectNode groupDeleting(@RequestBody GroupDeleting deleting){
+        return DeleteGroup.deleteGroup(deleting);
+    }
+    @GetMapping(value = "/group/get")
+    public ObjectNode getGroup(@RequestBody GroupGet groupGet){
+        return GetGroup.getGroups(groupGet);
     }
 
     public static class User {
@@ -215,8 +220,8 @@ public class UserController {
             this.privatee = privatee;
         }
     }
-    public static class GroupAdding{
-        public void GroupAdding(){
+    public static class GroupPatting {
+        public void groupPatting(){
 
         }
         private String groupName;
@@ -245,6 +250,43 @@ public class UserController {
 
         public void setInvitedUser(String invitedUser) {
             this.invitedUser = invitedUser;
+        }
+    }
+    public static class GroupDeleting{
+        public void GroupDeleting(){
+
+        }
+        String userWhoDelete;
+        int groupId;
+
+        public String getUserWhoDelete() {
+            return userWhoDelete;
+        }
+
+        public void setUserWhoDelete(String userWhoDelete) {
+            this.userWhoDelete = userWhoDelete;
+        }
+
+        public int getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(int groupId) {
+            this.groupId = groupId;
+        }
+    }
+    public static class GroupGet{
+        public void GroupGet(){
+
+        }
+        String userName;
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
         }
     }
 }
