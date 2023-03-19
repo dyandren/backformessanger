@@ -22,21 +22,21 @@ public class MessengeSend extends DataBaseConnection {
             json.put("MessageStatus","message too big");
             return json;
         }
-        Connection connection = Returnconnection();
+
         String check = "SELECT * FROM users WHERE login = ?";
-        PreparedStatement checkstatement = connection.prepareStatement(check);
+        PreparedStatement checkstatement = Returnconnection().prepareStatement(check);
         checkstatement.setString(1,message.getGetter());
         ResultSet Isexicted = checkstatement.executeQuery();
 
         if (Isexicted.next()){
+            checkstatement.close();
             String sql="INSERT INTO messages(sender,getter,message,read) VALUES (?, ?, ?, false)";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = Returnconnection().prepareStatement(sql);
             statement.setString(1,message.getSender());
             statement.setString(2, message.getGetter());
             statement.setString(3,message.getMessage());
             int rowsinserted = statement.executeUpdate();
             statement.close();
-            connection.close();
             if(rowsinserted>0){
                json.put("MessageStatus","Sent");
                return json;

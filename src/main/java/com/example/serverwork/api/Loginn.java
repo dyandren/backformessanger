@@ -12,13 +12,10 @@ public class Loginn extends DataBaseConnection {
         try{
 
             String sql = "SELECT * FROM users WHERE login = ? AND password = ?";
-            Connection connection = Returnconnection();
-            PreparedStatement pstmt= connection.prepareStatement(sql);
-            pstmt.setString(1,userr.getLogin());
-
-
-            pstmt.setString(2,userr.getPassword());
-            ResultSet rs = pstmt.executeQuery();
+            PreparedStatement preparedStatement= Returnconnection().prepareStatement(sql);
+            preparedStatement.setString(1,userr.getLogin());
+            preparedStatement.setString(2,userr.getPassword());
+            ResultSet rs = preparedStatement.executeQuery();
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode json = objectMapper.createObjectNode();
 
@@ -27,10 +24,12 @@ public class Loginn extends DataBaseConnection {
                 json.put("email",rs.getString("email"));
                 json.put("telephone",rs.getString("telephone"));
                 json.put("role",rs.getString("role"));
+                preparedStatement.close();
                 return json;
             }
             else {
                 json.put("Error","User not found");
+                preparedStatement.close();
                 return json;
             }
         }catch (Exception e){

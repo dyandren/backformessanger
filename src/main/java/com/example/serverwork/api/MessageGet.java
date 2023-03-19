@@ -15,14 +15,14 @@ public class MessageGet extends DataBaseConnection {
         try{
 
 
-            Connection connection = Returnconnection();
+
             String sql = "SELECT DISTINCT contact\n" +
                     "FROM (\n" +
                     "    SELECT sender AS contact FROM messages WHERE sender <> ? and getter = ?\n" +
                     "    UNION\n" +
                     "    SELECT getter AS contact FROM messages WHERE getter <> ? and sender = ?\n" +
                     ") AS temp_table;";//search a unique contact
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Returnconnection().prepareStatement(sql);
             preparedStatement.setString(1,messageget.getUser());
             preparedStatement.setString(2, messageget.getUser());
             preparedStatement.setString(3, messageget.getUser());
@@ -31,8 +31,6 @@ public class MessageGet extends DataBaseConnection {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode json = objectMapper.createObjectNode();
             ArrayNode contactsArray = objectMapper.createArrayNode();
-            //JSONObject json = new JSONObject();
-            //JSONArray contactsArray = new JSONArray();
             while (rs.next()){
                 contactsArray.add(rs.getString("contact"));
             }
@@ -41,7 +39,7 @@ public class MessageGet extends DataBaseConnection {
                 json = objectMapper.createObjectNode();
                 String whatUserSelect = contactsArray.get(messageget.getSelection() - 1).asText();
                 sql = "SELECT * FROM messages WHERE sender = ? or getter = ? ORDER BY senddate ASC";
-                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement = Returnconnection().prepareStatement(sql);
                 preparedStatement.setString(1,whatUserSelect);
                 preparedStatement.setString(2,whatUserSelect);
                 rs = preparedStatement.executeQuery();
@@ -58,6 +56,7 @@ public class MessageGet extends DataBaseConnection {
                     messages.add(whatInside);
                 }
                 json.set("messages",messages);
+                preparedStatement.close();
 
                 return json;
 

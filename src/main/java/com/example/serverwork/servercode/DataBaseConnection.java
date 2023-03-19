@@ -26,6 +26,7 @@ public  class DataBaseConnection {
         try {
             if (connection==null){
                 makeconnection();
+                System.out.println("create connection");
             }
             return connection;
         }catch (Exception e){

@@ -11,9 +11,9 @@ public class registration extends DataBaseConnection {
     public static ObjectNode Registation(UserController.User userr){
         try{
 
-            Connection connection = Returnconnection();
+
             String check = "SELECT * FROM users WHERE (login = ?) OR (email = ?)OR(telephone= ?)";
-            PreparedStatement checkstatement = connection.prepareStatement(check);
+            PreparedStatement checkstatement = Returnconnection().prepareStatement(check);
             checkstatement.setString(1,userr.getLogin());
             checkstatement.setString(2,userr.getEmail());
             checkstatement.setString(3,userr.getTelephone());
@@ -24,9 +24,9 @@ public class registration extends DataBaseConnection {
                 json.put("Regisration status","user with this login exist");
                 return json;
             }
-
+            checkstatement.close();
             String sql = "INSERT INTO users(login,password,role,email,telephone) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = Returnconnection().prepareStatement(sql);
             statement.setString(1,userr.getLogin());
             statement.setString(2,userr.getPassword());
             statement.setString(3,userr.getRole());
@@ -35,7 +35,7 @@ public class registration extends DataBaseConnection {
             int rowsInserted = statement.executeUpdate();
             statement.close();
 
-            connection.close();
+
             if(rowsInserted>0){
 
                 json.put("Regisration status","Registration completed");
