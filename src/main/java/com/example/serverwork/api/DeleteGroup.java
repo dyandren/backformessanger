@@ -31,7 +31,6 @@ public class DeleteGroup extends DataBaseConnection {
                 preparedStatement.executeUpdate();
                 preparedStatement = Returnconnection().prepareStatement(sql4);
                 int changes = preparedStatement.executeUpdate();
-                System.out.println(changes);
                 json.put("deleting status","completed");
                 preparedStatement.close();
                 return json;
