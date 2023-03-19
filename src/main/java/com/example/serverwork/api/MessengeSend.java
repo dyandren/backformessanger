@@ -1,5 +1,7 @@
-package com.example.serverwork;
+package com.example.serverwork.api;
 
+import com.example.serverwork.servercode.DataBaseConnection;
+import com.example.serverwork.servercode.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

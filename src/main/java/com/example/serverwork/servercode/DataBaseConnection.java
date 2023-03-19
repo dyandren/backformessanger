@@ -1,4 +1,4 @@
-package com.example.serverwork;
+package com.example.serverwork.servercode;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

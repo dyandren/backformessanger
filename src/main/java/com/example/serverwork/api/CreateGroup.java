@@ -1,10 +1,11 @@
-package com.example.serverwork;
+package com.example.serverwork.api;
 
+import com.example.serverwork.servercode.DataBaseConnection;
+import com.example.serverwork.servercode.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 

@@ -1,4 +1,4 @@
-package com.example.serverwork;
+package com.example.serverwork.servercode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
